@@ -204,7 +204,7 @@ void menu() {
         switch(pilih) {
             case 1: tambahData(data, jumlah); break;
             case 2: tampilData(data, jumlah); break;
-            case 3: linearSearch(data, jumlah); break;
+            case 3: sortById(data, jumlah);linearSearch(data, jumlah); break;
             case 4: fibonacciSearch(data, jumlah); break;
             case 5: bubbleSort(data, jumlah); break;
             case 6: selectionSort(data, jumlah); break;
