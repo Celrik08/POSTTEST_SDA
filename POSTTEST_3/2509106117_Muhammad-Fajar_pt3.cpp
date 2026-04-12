@@ -1,4 +1,5 @@
 #include <iostream>
+#define MAX 100
 using namespace std;
 
 struct Hewan {
@@ -9,13 +10,13 @@ struct Hewan {
 };
 
 struct Antrian {
-    Hewan data[100];
+    Hewan data[MAX];
     int front = 0;
     int rear = -1;
 };
 
 struct Riwayat {
-    Hewan data[100];
+    Hewan data[MAX];
     int atas = -1;
 };
 
@@ -158,8 +159,15 @@ void selectionSort(Hewan *arr, int n) {
 }
 
 void enqueue(Antrian *q, Hewan h) {
+    if(q->rear == MAX - 1) {
+        cout << "Mohon maaf antrian penuh (Overflow)\n";
+        return;
+    }
+
     q->rear++;
     q->data[q->rear] = h;
+
+    cout << "Hewan anda masuk ke antrian!\n";
 }
 
 Hewan dequeue(Antrian *q) {
@@ -167,23 +175,27 @@ Hewan dequeue(Antrian *q) {
     kosong.id = -1;
 
     if(q->front > q->rear) {
-        cout << "Antrian kosong!\n";
+        cout << "Antrian kosong! (Underflow), silahkan anda menyuruh pelanggan anda mengambil antrian\n";
         return kosong;
     }
 
     Hewan h = q->data[q->front];
     q->front++;
 
-    cout << "Dipanggil: " << h.id << " | " << h.nama_hewan << endl;
+    cout << "No panggilan pelanggan: " 
+         << h.id << " | " 
+         << h.nama_hewan << endl;
+
     return h;
 }
 
 void tampilAntrian(Antrian *q) {
     if(q->front > q->rear) {
-        cout << "Kosong!\n";
+        cout << "Antrian kosong!\n";
         return;
     }
 
+    cout << "\n=== DATA ANTRIAN ===\n";
     for(Hewan *ptr = q->data + q->front; ptr <= q->data + q->rear; ptr++) {
         cout << ptr->id << " | " << ptr->nama_hewan << endl;
     }
@@ -191,31 +203,46 @@ void tampilAntrian(Antrian *q) {
 
 void peekAntrian(Antrian *q) {
     if(q->front <= q->rear) {
-        cout << "Bagian depan antrian: " << q->data[q->front].nama_hewan << endl;
+        cout << "Antrian Paling Depan: " 
+             << q->data[q->front].id << " | "
+             << q->data[q->front].nama_hewan << endl;
+    } else {
+        cout << "Antrian Peetshoop kosong!\n";
     }
 }
 
 void push(Riwayat *s, Hewan h) {
+    if(s->atas == MAX - 1) {
+        cout << "Riwayat penuh! (Overflow), tidak bisa memanggil pelanggan lagi kembali\n";
+        return;
+    }
+
     s->atas++;
     s->data[s->atas] = h;
+
+    cout << "Masuk ke riwayat!\n";
 }
 
 void pop(Riwayat *s) {
     if(s->atas == -1) {
-        cout << "Riwayat kosong!\n";
+        cout << "Riwayat kosong! (Underflow), silahkan masukkan riwayat antrian pelanggan\n";
         return;
     }
 
-    cout << "Hapus: " << s->data[s->atas].nama_hewan << endl;
+    cout << "Hapus: " 
+         << s->data[s->atas].id << " | "
+         << s->data[s->atas].nama_hewan << endl;
+
     s->atas--;
 }
 
 void tampilRiwayat(Riwayat *s) {
     if(s->atas == -1) {
-        cout << "Kosong!\n";
+        cout << "Riwayat kosong!\n";
         return;
     }
 
+    cout << "\n=== DATA RIWAYAT ===\n";
     for(Hewan *ptr = s->data; ptr <= s->data + s->atas; ptr++) {
         cout << ptr->id << " | " << ptr->nama_hewan << endl;
     }
@@ -223,7 +250,11 @@ void tampilRiwayat(Riwayat *s) {
 
 void peekRiwayat(Riwayat *s) {
     if(s->atas != -1) {
-        cout << "Bagian belakang riwayat: " << s->data[s->atas].nama_hewan << endl;
+        cout << "Riwayat terakhir pelanggan: " 
+             << s->data[s->atas].id << " | "
+             << s->data[s->atas].nama_hewan << endl;
+    } else {
+        cout << "Riwayat kosong!\n";
     }
 }
 
